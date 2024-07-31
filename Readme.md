@@ -9,18 +9,45 @@ Web開発のポートフォリオを作成するためのサンプルコード�
 - Ubuntu 22.04.4 LTSで動作を確認しています。
 
 ## 事前準備
-1. java17インストール
+1. dockerインストール(Ubuntuの例)
+    - [公式](https://docs.docker.com/engine/install/)より抜粋
+        ```bash
+        # Add Docker's official GPG key:
+        sudo apt-get update
+        sudo apt-get install ca-certificates curl
+        sudo install -m 0755 -d /etc/apt/keyrings
+        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+        sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+        # Add the repository to Apt sources:
+        echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+        $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        sudo apt-get update
+        sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+        # Setting to omit sudo:
+        sudo groupadd docker
+        sudo usermod -aG docker $USER
+        newgrp docker
+        ```
+2. makeのインストール
+    ```bash
+    sudo apt-get install make 
+    ```
+3. java17インストール
     ```bash
     sudo apt-get update
     sudo apt-get install openjdk-17-jdk
     ```
-2. 本リポジトリをcloneする
+4. 本リポジトリをcloneする
     ```bash
     git clone https://github.com/otokawa-tatsumi/portfolio_sample_java.git
     ```
-3. vscodeでワークスペースを開く
+5. vscodeでワークスペースを開く
     - ファイル -> ファイルでワークスペースを開く -> .vscode/portfolio_sample_java.code-workspaceを選択
-4. vscodeに以下の拡張機能をインストール
+6. vscodeに以下の拡張機能をインストール
     - Extension Pack for Java
     - Spring Boot Extension Pack
 
