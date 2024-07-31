@@ -10,7 +10,7 @@ public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @GetMapping("/login")
+    @GetMapping({"/", "/login"})
     public String login() {
         logger.debug("login");
         return "login";
