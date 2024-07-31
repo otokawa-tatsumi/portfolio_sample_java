@@ -8,7 +8,11 @@
             "mainClass": "com.example.sample.SampleApplication",
             "projectName": "sample",
             "cwd": "${workspaceFolder}/sample",
-            "args": ["--spring.profiles.active=dev", "-Dlogging.level.root=DEBUG"]
+            "args": [
+                "--spring.profiles.active=dev",
+            ],
+            "vmArgs": "-Dlogging.level.root=INFO -Xmx1024m",
+            "preLaunchTask": "build",
         }
     ]
 }
