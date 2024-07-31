@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "SampleApplication",
+            "request": "launch",
+            "mainClass": "com.example.sample.SampleApplication",
+            "projectName": "sample",
+            "cwd": "${workspaceFolder}/sample",
+            "args": ["--spring.profiles.active=dev", "-Dlogging.level.root=DEBUG"]
+        }
+    ]
+}

@@ -1,0 +1,81 @@
+services:
+  # DB
+  db:
+    image: postgres:16.2
+    container_name: portfolio-sample-java-db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - volume_postgres:/var/lib/postgresql/data
+      - ./db/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - db
+
+  # DBクライアント
+  db-manager:
+    image: dpage/pgadmin4:8.4
+    container_name: portfolio-sample-java-db-manager
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 8081
+    depends_on:
+      - db
+    volumes:
+      - volume_pgadmin:/var/lib/pgadmin
+      - ./db/servers.json:/pgadmin4/servers.json
+      - ./db/pgpass:/pgadmin4/pgpass
+    # servers.jsonのPassFile設定用
+    # https://github.com/pgadmin-org/pgadmin4/issues/6257
+    entrypoint: >
+      /bin/sh -c "
+      mkdir -m 700 -p /var/lib/pgadmin/storage/admin_pgadmin.org;
+      cp /pgadmin4/pgpass /var/lib/pgadmin/storage/admin_pgadmin.org/;
+      chmod 600 /var/lib/pgadmin/storage/admin_pgadmin.org/pgpass;
+      /entrypoint.sh
+      "
+    networks:
+      - web
+      - db
+
+  # Webアプリケーション
+  app:
+    build:
+      context: ./sample
+      dockerfile: Dockerfile
+    container_name: portfolio-sample-java-app
+    depends_on:
+      - db
+    networks:
+      - web
+      - db
+
+  # リバースプロキシ用
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: portfolio-sample-java-nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+      - db-manager
+    networks:
+      - web
+
+networks:
+  web:
+    name: web
+    driver: bridge
+  db:
+    name: db
+    driver: bridge
+
+volumes:
+  volume_postgres:
+    name: portfolio-sample-vpg
+  volume_pgadmin:
+    name: portfolio-sample-vpga

@@ -1,0 +1,8 @@
+<header th:fragment="header" class="header">
+    <div class="header-content">
+        <!-- 他の要素をここに追加 -->
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit" class="button">Logout</button>
+        </form>
+    </div>
+</header>
